@@ -1,0 +1,42 @@
+<!-- build.xml file -->
+<!-- Conor Gilmer(cgilmer@tinet.ie) -->
+
+<project name="dhondtSim" default="all">
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+	<javac srcdir="." destdir="build/classes"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/dhondtSim.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="dhondtSim"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run">
+        <java jar="build/jar/dhondtSim.jar" fork="true"/>
+    </target>
+
+<!--    <target name="launch"> 
+	<exec executable="appletviewer"> 
+	  <arg value="dhondt.html"/> 
+        </exec> 
+    </target> -->
+
+    <target name="all" depends="clean">
+        <antcall target="compile"/>
+        <antcall target="jar"/>
+        <antcall target="run"/>
+    </target>
+
+</project>
+
+

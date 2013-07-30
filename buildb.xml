@@ -1,0 +1,68 @@
+<project name="Elections Applet" default="dist" basedir=".">
+ <description>
+        build file for elections applet
+    </description>
+ <!-- set global properties for this build -->
+ <property name="src" location="." />
+ <property name="build" location="build" />
+ <property name="dist" location="dist" />
+
+ <target name="init">
+  <!-- Create the time stamp -->
+  <tstamp />
+  <!-- Create the build directory structure used by compile -->
+  <mkdir dir="${build}" />
+ </target>
+
+ <target name="compile" depends="init" description="compile the source ">
+
+
+  <!-- Compile the java code from ${src} into ${build} -->
+  <javac srcdir="${src}" destdir="${build}">
+   <classpath>
+    <pathelement path="${classpath}" />
+<!--    <pathelement path="lib/commons-codec-1.3.jar:lib/commons-httpclient-3.1.jar:lib/plugin.jar" />-->
+   </classpath>
+
+  </javac>
+ </target>
+
+ <target name="dist" depends="compile" description="generate the distribution">
+  <!-- Create the distribution directory -->
+  <mkdir dir="${dist}" />
+
+
+  <copy todir="${build}/lib">
+   <fileset dir="lib/" />
+  </copy>
+
+  <path id="libs.project">
+
+   <!-- lib.home contains all jar files, in several subdirectories -->
+   <fileset dir="lib">
+    <include name="**/*.jar" />
+   </fileset>
+  </path>
+
+  <manifestclasspath property="jar.classpath" maxParentLevels="1" jarfile="build/ElectionsApplet.jar">
+
+   <classpath refid="libs.project" />
+  </manifestclasspath>
+
+  <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+  <jar jarfile="ElectionsApplet.jar" basedir="${build}">
+   <manifest>
+    <attribute name="Class-Path" value="${jar.classpath}" />
+   </manifest>
+  </jar>
+ </target>
+
+
+
+ <target name="clean" description="clean up">
+  <!-- Delete the ${build} and ${dist} directory trees -->
+  <delete dir="${build}" />
+  <delete dir="${dist}" />
+ </target>
+</project>
+
